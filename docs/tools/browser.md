@@ -8,7 +8,7 @@ read_when:
 
 # Browser (clawd-managed)
 
-Clawdbot can run a **dedicated Chrome/Chromium profile** that the agent controls.
+Clawdbot can run a **dedicated Brave/Chrome/Chromium profile** that the agent controls.
 It is isolated from your personal browser and is managed through a small local
 control server.
 
@@ -69,17 +69,17 @@ Notes:
 - If you override the Gateway port (`gateway.port` or `CLAWDBOT_GATEWAY_PORT`),
   the default browser ports shift to stay in the same “family” (control = gateway + 2).
 - `cdpUrl` defaults to `controlUrl + 1` when unset.
-- `attachOnly: true` means “never launch Chrome; only attach if it is already running.”
+- `attachOnly: true` means “never launch a local browser; only attach if it is already running.”
 - `color` + per-profile `color` tint the browser UI so you can see which profile is active.
 
 ## Local vs remote control
 
 - **Local control (default):** `controlUrl` is loopback (`127.0.0.1`/`localhost`).
-  The Gateway starts the control server and can launch Chrome.
+  The Gateway starts the control server and can launch a local browser.
 - **Remote control:** `controlUrl` is non-loopback. The Gateway **does not** start
   a local server; it assumes you are pointing at an existing server elsewhere.
 - **Remote CDP:** set `browser.profiles.<name>.cdpUrl` (or `browser.cdpUrl`) to
-  attach to a remote Chrome. In this case, Clawdbot will not launch a local browser.
+  attach to a remote Brave/Chrome/Chromium. In this case, Clawdbot will not launch a local browser.
 
 ## Remote browser (control server)
 
@@ -88,7 +88,7 @@ Gateway at it with a remote `controlUrl`. This lets the agent drive a browser
 outside the host (lab box, VM, remote desktop, etc.).
 
 Key points:
-- The **control server** speaks to Chrome/Chromium via **CDP**.
+- The **control server** speaks to Brave/Chrome/Chromium via **CDP**.
 - The **Gateway** only needs the HTTP control URL.
 - Profiles are resolved on the **control server** side.
 
@@ -104,7 +104,7 @@ Example:
 ```
 
 Use `profiles.<name>.cdpUrl` for **remote CDP** if you want the Gateway to talk
-directly to a Chrome instance without a remote control server.
+directly to a Brave/Chrome/Chromium instance without a remote control server.
 
 ### Running the control server on the browser machine
 
@@ -264,22 +264,23 @@ Notes:
 
 ## Isolation guarantees
 
-- **Dedicated user data dir**: never touches your personal Chrome profile.
+- **Dedicated user data dir**: never touches your personal browser profile.
 - **Dedicated ports**: avoids `9222` to prevent collisions with dev workflows.
 - **Deterministic tab control**: target tabs by `targetId`, not “last tab”.
 
 ## Browser selection
 
 When launching locally, Clawdbot picks the first available:
-1. Chrome Canary
-2. Chromium
-3. Chrome
+1. Brave
+2. Chrome Canary
+3. Chromium
+4. Chrome
 
 You can override with `browser.executablePath`.
 
 Platforms:
 - macOS: checks `/Applications` and `~/Applications`.
-- Linux: looks for `google-chrome`, `chromium`, etc.
+- Linux: looks for `brave`, `google-chrome`, `chromium`, etc.
 - Windows: checks common install locations.
 
 ## Control API (optional)
@@ -313,7 +314,7 @@ For the Chrome extension relay driver, ARIA snapshots and screenshots require Pl
 
 High-level flow:
 - A small **control server** accepts HTTP requests.
-- It connects to Chrome/Chromium via **CDP**.
+- It connects to Brave/Chrome/Chromium via **CDP**.
 - For advanced actions (click/type/snapshot/PDF), it uses **Playwright** on top
   of CDP.
 - When Playwright is missing, only non-Playwright operations are available.

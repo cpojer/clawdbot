@@ -2371,9 +2371,9 @@ Example:
 }
 ```
 
-### `browser` (clawd-managed Chrome)
+### `browser` (clawd-managed browser)
 
-Clawdbot can start a **dedicated, isolated** Chrome/Chromium instance for clawd and expose a small loopback control server.
+Clawdbot can start a **dedicated, isolated** Brave/Chrome/Chromium instance for clawd and expose a small loopback control server.
 Profiles can point at a **remote** Chrome via `profiles.<name>.cdpUrl`. Remote
 profiles are attach-only (start/stop/reset are disabled).
 

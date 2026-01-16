@@ -5,7 +5,7 @@ import path from "node:path";
 import type { ResolvedBrowserConfig } from "./config.js";
 
 export type BrowserExecutable = {
-  kind: "canary" | "chromium" | "chrome" | "custom";
+  kind: "brave" | "canary" | "chromium" | "chrome" | "custom";
   path: string;
 };
 
@@ -27,6 +27,14 @@ function findFirstExecutable(candidates: Array<BrowserExecutable>): BrowserExecu
 
 export function findChromeExecutableMac(): BrowserExecutable | null {
   const candidates: Array<BrowserExecutable> = [
+    {
+      kind: "brave",
+      path: "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+    },
+    {
+      kind: "brave",
+      path: path.join(os.homedir(), "Applications/Brave Browser.app/Contents/MacOS/Brave Browser"),
+    },
     {
       kind: "canary",
       path: "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary",
@@ -61,6 +69,10 @@ export function findChromeExecutableMac(): BrowserExecutable | null {
 
 export function findChromeExecutableLinux(): BrowserExecutable | null {
   const candidates: Array<BrowserExecutable> = [
+    { kind: "brave", path: "/usr/bin/brave-browser" },
+    { kind: "brave", path: "/usr/bin/brave-browser-stable" },
+    { kind: "brave", path: "/usr/bin/brave" },
+    { kind: "brave", path: "/snap/bin/brave" },
     { kind: "chrome", path: "/usr/bin/google-chrome" },
     { kind: "chrome", path: "/usr/bin/google-chrome-stable" },
     { kind: "chromium", path: "/usr/bin/chromium" },
@@ -82,6 +94,11 @@ export function findChromeExecutableWindows(): BrowserExecutable | null {
   const candidates: Array<BrowserExecutable> = [];
 
   if (localAppData) {
+    // Brave (user install)
+    candidates.push({
+      kind: "brave",
+      path: joinWin(localAppData, "BraveSoftware", "Brave-Browser", "Application", "brave.exe"),
+    });
     // Chrome Canary (user install)
     candidates.push({
       kind: "canary",
@@ -108,6 +125,16 @@ export function findChromeExecutableWindows(): BrowserExecutable | null {
   candidates.push({
     kind: "chrome",
     path: joinWin(programFilesX86, "Google", "Chrome", "Application", "chrome.exe"),
+  });
+  // Brave (system install, 64-bit)
+  candidates.push({
+    kind: "brave",
+    path: joinWin(programFiles, "BraveSoftware", "Brave-Browser", "Application", "brave.exe"),
+  });
+  // Brave (system install, 32-bit on 64-bit Windows)
+  candidates.push({
+    kind: "brave",
+    path: joinWin(programFilesX86, "BraveSoftware", "Brave-Browser", "Application", "brave.exe"),
   });
 
   return findFirstExecutable(candidates);

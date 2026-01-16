@@ -785,7 +785,7 @@ Location:
 
 ## Browser
 
-Browser control CLI (dedicated Chrome/Chromium). See [`clawdbot browser`](/cli/browser) and the [Browser tool](/tools/browser).
+Browser control CLI (dedicated Brave/Chrome/Chromium). See [`clawdbot browser`](/cli/browser) and the [Browser tool](/tools/browser).
 
 Common options:
 - `--url <controlUrl>`
