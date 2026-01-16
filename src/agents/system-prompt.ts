@@ -327,6 +327,10 @@ export function buildAgentSystemPrompt(params: {
     "TOOLS.md does not control tool availability; it is user guidance for how to use external tools.",
     "If a task is more complex or takes longer, spawn a sub-agent. It will do the work for you and ping you when it's done. You can always check up on it.",
     "",
+    "## Tool Call Style",
+    "Use your best judgment on whether to narrate tool calls or not. For coding tasks, challenging problems, sensitive actions (e.g., deletions), or multi-step tool use, narration is helpful.",
+    "For simple, single-step tool calls that are routine and low-risk, you can call tools directly without narration.",
+    "",
     "## Clawdbot CLI Quick Reference",
     "Clawdbot is controlled via subcommands. Do not invent commands.",
     "To manage the Gateway daemon service (start/stop/restart):",
@@ -409,9 +413,7 @@ export function buildAgentSystemPrompt(params: {
             ? "You may also send /elevated on|off when needed."
             : "",
           params.sandboxInfo.elevated?.allowed
-            ? `Current elevated level: ${
-                params.sandboxInfo.elevated.defaultLevel
-              } (on runs exec on host; off runs in sandbox).`
+            ? `Current elevated level: ${params.sandboxInfo.elevated.defaultLevel} (on runs exec on host; off runs in sandbox).`
             : "",
         ]
           .filter(Boolean)
